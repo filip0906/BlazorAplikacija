@@ -1,0 +1,40 @@
+@page "/movie"
+
+<h3>Movie (@CountWatched())</h3>
+
+<ul>
+    @foreach (var item in movies)
+    {
+        <li>
+            <input type="checkbox" @bind="item.Watched">
+            @item.Title
+            @item.Published
+        </li>
+    }
+</ul>
+
+<input type="text" placeholder="Type your movie" @bind="newMovie">
+<input type="text" placeholder="Year of published">
+<button class="btn btn-primary" @onclick="AddMovie">Add new movie</button>
+
+@code {
+  private string? newMovie;
+  private List<MovieItem> movies = new();
+
+  private void AddMovie() {
+    if (!string.IsNullOrWhiteSpace(newMovie)) {
+      movies.Add(new MovieItem { Title = newMovie});
+      newMovie = "";
+    }
+  }
+
+  private int CountWatched() {
+    int numberWatched = 0;
+    foreach (var item in movies) {
+      if (item.Watched) {
+        numberWatched++;
+      }
+    }
+    return numberWatched;
+  }
+}
